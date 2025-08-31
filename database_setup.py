@@ -17,12 +17,15 @@ CREATE TABLE IF NOT EXISTS workouts (
 )
 ''')
 
-# --- Create the 'meals' Tzble ---
+# In database_setup.py
+
+# --- Create the 'meals' table with a new 'quantity' column ---
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS meals (
     id INTEGER PRIMARY KEY,
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    timestamp TEXT NOT NULL,
     meal_name TEXT NOT NULL,
+    quantity TEXT, 
     calories INTEGER,
     protein_grams INTEGER,
     carbs_grams INTEGER,
