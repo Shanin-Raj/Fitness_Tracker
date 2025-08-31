@@ -4,12 +4,19 @@ from datetime import datetime
 import re
 import json
 
-# --- AI Setup ---
-import config 
+# --- AI Setup (for both local and cloud) ---
+import streamlit as st
 import google.generativeai as genai
 
-# Configure the Gemini API with your key
-genai.configure(api_key=config.API_KEY)
+try:
+    # Get API key from Streamlit secrets
+    api_key = st.secrets["GEMINI_API_KEY"]
+except (FileNotFoundError, KeyError):
+    # Fallback to local config file
+    import config
+    api_key = config.API_KEY
+
+genai.configure(api_key=api_key)
 # --- End of AI Setup ---
 
 
