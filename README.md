@@ -2,7 +2,8 @@
 
 A comprehensive, AI-powered personal fitness and diet assistant built with Python. This application functions as a command-line tool, an intelligent backend, and an interactive web application, designed to provide personalized health and fitness plans.
 
-![AI Fitness Tracker App Screenshot](c:\Users\shani\OneDrive\Pictures\Screenshots\Screenshot 2025-08-31 104337.png) 
+![AI Fitness Tracker App Screenshot](<img width="1917" height="1022" alt="Screenshot 2025-08-31 104337" src="https://github.com/user-attachments/assets/0f439a98-55b2-44a4-ba4c-bca305c2a48d" />
+) 
 
 ---
 
@@ -45,7 +46,7 @@ To get a local copy up and running, follow these simple steps.
 
 1.  **Clone the repo**
     ```sh
-    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/Shanin-Raj/Fitness_Tracker.git)
     cd your-repo-name
     ```
     2.  **Install required packages**
