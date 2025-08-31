@@ -2,6 +2,12 @@
 __pycache__/
 *.py[codz]
 *$py.class
+#--personal data--
+profile.json
+
+# --- Secrets ---
+# Ignore the configuration file containing the API key
+config.py
 
 # C extensions
 *.so
