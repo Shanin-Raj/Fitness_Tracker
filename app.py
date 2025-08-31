@@ -4,7 +4,7 @@ import fitness as ft # Import our refactored fitness.py as ft
 
 st.set_page_config(layout="wide")
 
-st.title("S.H.A.N.I.N. Fitness Tracker 🏋️")
+st.title("AI-Fitness Tracker 🏋️")
 
 # --- Sidebar Navigation ---
 st.sidebar.title("Navigation")
