@@ -10,6 +10,7 @@ profile.json
 config.py
 # Ignore the service account key
 serviceAccountKey.json
+firebase_config.py
 
 # C extensions
 *.so
