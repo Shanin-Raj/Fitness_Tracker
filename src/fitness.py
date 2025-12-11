@@ -3,6 +3,8 @@ import sqlite3
 from datetime import datetime
 import re
 import json
+from firebase_admin import firestore
+from config.firebase_config import db # Import the Firestore database object
 
 # --- AI Setup (for both local and cloud) ---
 import streamlit as st
@@ -13,7 +15,7 @@ try:
     api_key = st.secrets["GEMINI_API_KEY"]
 except (FileNotFoundError, KeyError):
     # Fallback to local config file
-    import config
+    import src.config as config
     api_key = config.API_KEY
 
 genai.configure(api_key=api_key)
@@ -90,15 +92,19 @@ def generate_transformation_plan(profile):
     except Exception as e:
         return f"❌ An error occurred while generating the plan: {e}"
 
-def log_workout(exercise, sets, reps):
-    conn = sqlite3.connect(DATABASE_NAME)
-    cursor = conn.cursor()
-    timestamp = datetime.now().isoformat()
-    cursor.execute('INSERT INTO workouts (timestamp, exercise_name, sets, reps) VALUES (?, ?, ?, ?)', 
-                   (timestamp, exercise, sets, reps))
-    conn.commit()
-    conn.close()
-    print(f"✅ Logged Workout: {sets} sets of {reps} {exercise}.")
+# In fitness.py, replace the log_workout function
+
+def log_workout(user_id, exercise, sets, reps):
+    """Saves a workout entry to Firestore for a specific user."""
+    doc_ref = db.collection('workouts').document()
+    doc_ref.set({
+        'user_id': user_id,
+        'exercise_name': exercise,
+        'sets': sets,
+        'reps': reps,
+        'timestamp': firestore.SERVER_TIMESTAMP # Adds a server-side timestamp
+    })
+    print(f"✅ Logged Workout to Firestore: {sets} sets of {reps} {exercise}.")
 
 def log_meal(name, quantity):
     ai_data = get_nutritional_info(name, quantity)
@@ -120,19 +126,23 @@ def log_meal(name, quantity):
     conn.close()
     print(f"✅ Logged Meal: {quantity} of {name}.")
 
-def view_workouts():
-    conn = sqlite3.connect(DATABASE_NAME)
-    cursor = conn.cursor()
-    cursor.execute("SELECT timestamp, exercise_name, sets, reps FROM workouts ORDER BY timestamp DESC")
-    rows = cursor.fetchall()
-    conn.close()
-    
+# In fitness.py, replace the view_workouts function
+
+def view_workouts(user_id):
+    """Retrieves and displays workout entries for a specific user from Firestore."""
+    workouts_ref = db.collection('workouts').where('user_id', '==', user_id).order_by('timestamp', direction='DESCENDING')
+    docs = workouts_ref.stream()
+
     output = []
-    if not rows:
+    for doc in docs:
+        workout = doc.to_dict()
+        # Ensure timestamp exists and format it
+        if 'timestamp' in workout and workout['timestamp']:
+            timestamp = workout['timestamp'].strftime('%Y-%m-%d %H:%M')
+            output.append(f"[{timestamp}] {workout['exercise_name']}: {workout['sets']} sets of {workout['reps']} reps")
+    
+    if not output:
         return ["No workouts logged yet."]
-    for row in rows:
-        timestamp = datetime.fromisoformat(row[0]).strftime('%Y-%m-%d %H:%M')
-        output.append(f"[{timestamp}] {row[1]}: {row[2]} sets of {row[3]} reps")
     return output
 
 def view_meals():

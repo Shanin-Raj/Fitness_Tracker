@@ -8,6 +8,8 @@ profile.json
 # --- Secrets ---
 # Ignore the configuration file containing the API key
 config.py
+# Ignore the service account key
+serviceAccountKey.json
 
 # C extensions
 *.so
