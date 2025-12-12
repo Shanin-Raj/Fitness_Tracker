@@ -1,0 +1,12 @@
+[
+    {"name": "Puttu (1 piece)", "calories": 305, "protein": 6, "carbs": 64, "fats": 1},
+    {"name": "Kadala Curry (1 cup)", "calories": 200, "protein": 10, "carbs": 30, "fats": 5},
+    {"name": "Idli (1 piece)", "calories": 39, "protein": 2, "carbs": 8, "fats": 0},
+    {"name": "Dosa (Plain, 1 medium)", "calories": 133, "protein": 3, "carbs": 23, "fats": 3},
+    {"name": "Kerala Fish Curry (1 serving)", "calories": 180, "protein": 22, "carbs": 6, "fats": 8},
+    {"name": "Rice (Matta/Red, 1 cup cooked)", "calories": 218, "protein": 4.5, "carbs": 45, "fats": 1.5},
+    {"name": "Chicken Curry (Coconut based, 1 cup)", "calories": 350, "protein": 25, "carbs": 12, "fats": 22},
+    {"name": "Porotta (1 piece)", "calories": 280, "protein": 5, "carbs": 35, "fats": 13},
+    {"name": "Sambar (1 cup)", "calories": 130, "protein": 5, "carbs": 18, "fats": 4},
+    {"name": "Egg Roast (1 egg + gravy)", "calories": 160, "protein": 8, "carbs": 6, "fats": 11}
+]

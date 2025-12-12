@@ -1,0 +1,89 @@
+/* static/style.css */
+
+/* 1. MODERN GLASS VARIABLES */
+:root {
+    /* Soft gradient background like the reference */
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c0cee3 100%);
+    /* The frosted glass effect color */
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --text-primary: #1a1a1a;
+    --text-secondary: #666;
+    /* The dark button color from the reference */
+    --accent-dark: #1e1e2f; 
+    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+body {
+    background: var(--bg-gradient);
+    font-family: 'Inter', sans-serif; /* A clean, professional font */
+    color: var(--text-primary);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* 2. THE CORE GLASS CARD CLASS */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px); /* This creates the frosted effect */
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 30px;
+    margin-bottom: 25px;
+}
+
+/* 3. MODERN INPUTS & BUTTONS */
+h1, h2, h3 { margin-top: 0; color: var(--accent-dark); }
+
+.modern-input {
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 15px;
+    background: rgba(255,255,255,0.6);
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+.modern-input:focus {
+    background: white;
+    box-shadow: 0 0 0 2px rgba(30, 30, 47, 0.1);
+}
+
+.btn-dark {
+    width: 100%;
+    padding: 15px;
+    background: var(--accent-dark);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 4. LAYOUT UTILITIES */
+.center-container {
+    max-width: 500px;
+    margin: 40px auto;
+}
+
+/* Chat Bubble Styles */
+.chat-msg-user { background: var(--accent-dark); color: white; padding: 10px 15px; border-radius: 15px 15px 0 15px; display: inline-block; font-size: 14px; }
+.chat-msg-ai { background: white; color: black; padding: 10px 15px; border-radius: 15px 15px 15px 0; display: inline-block; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 14px; }
+
+a { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
+a:hover { color: var(--accent-dark); }

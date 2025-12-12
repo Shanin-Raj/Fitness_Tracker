@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Join - Kerala Fitness</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <h1 style="color: var(--primary-green);">Join the Family 🌱</h1>
+            <p style="color: #666; margin-bottom: 30px;">Start your healthy Kerala lifestyle.</p>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p style="color: red; font-size: 14px;">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="/register">
+                <input type="text" name="username" class="input-field" placeholder="Choose Username" required>
+                <input type="email" name="email" class="input-field" placeholder="Email Address" required>
+                <input type="password" name="password" class="input-field" placeholder="Create Password" required>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+            
+            <p style="margin-top: 20px; font-size: 14px;">
+                Already have an account? <a href="/login">Login here</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
