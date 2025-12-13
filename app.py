@@ -244,5 +244,10 @@ def search_food():
 
     return jsonify({"error": "Food not found"}), 404
 
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return home()
+
 if __name__ == '__main__':
     app.run(debug=True)
