@@ -8,14 +8,20 @@ from flask_bcrypt import Bcrypt
 from groq import Groq
 from datetime import datetime,date
 
+
 # Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
 
 # --- CONFIG ---
-app.config['SECRET_KEY'] = 'secretkey123'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+database_url = os.environ.get('DATABASE_URL', 'sqlite:///database.db')
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev_secret_key')
+
 
 # --- AI SETUP (Groq) ---
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
@@ -117,8 +123,11 @@ def ask_ai():
     user_message = request.json.get('message')
     
     # 1. Define the Persona (The "System Prompt")
-    system_instruction = """You are 'Chettan', a friendly and knowledgeable fitness coach from Kerala. 
+    system_instruction = """You are 'Chettan', a friendly and knowledgeable fitness Assistant from Kerala. 
 You help people with Indian/Kerala diet tips, workout advice, and motivation.
+- Use casual, friendly language with Malayalam phrases if needed only dont use too many.
+- use metric units (kg, cm, etc).
+- Should store continous knowledge of user's fitness journey.
 - Keep answers short (under 3 sentences).
 - Use simple English.
 - If asked about non-fitness topics (like math or coding), politely refuse.

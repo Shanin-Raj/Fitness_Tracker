@@ -13,7 +13,7 @@
             style="padding: 30px; display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h1>Hello, {{ user.username }} 👋</h1>
-                <p>Track your Kerala meals accurately.</p>
+                <p>Track your meals accurately.</p>
             </div>
             <a href="/logout" class="btn-primary"
                 style="width: auto; padding: 10px 20px; background: #ef4444;">Logout</a>
@@ -36,7 +36,7 @@
 
             <!-- Search Results (Hidden by default) -->
             <div id="result" style="display: none; animation: slideUp 0.3s ease-out;">
-                <div style="background: rgba(255,255,255,0.5); border-radius: 16px; padding: 24px; margin-top: 20px;">
+                <div class="result-card">
                     <div
                         style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
                         <div>
@@ -46,22 +46,22 @@
                         <div style="text-align: right;">
                             <label style="font-size: 0.8rem;">Servings</label>
                             <input type="number" id="qtyInput" value="1" min="0.5" step="0.5" onchange="updateMath()"
-                                style="width: 80px; padding: 8px; border-radius: 8px; border: 1px solid #ddd; text-align: center;">
+                                class="servings-input">
                         </div>
                     </div>
 
                     <div class="macro-cards">
                         <div class="macro-card">
                             <span class="macro-label">Calories</span>
-                            <span class="macro-value" style="color: #ef4444;"><span id="dispCal">0</span></span>
+                            <span class="macro-value"><span id="dispCal">0</span></span>
                         </div>
                         <div class="macro-card">
                             <span class="macro-label">Protein</span>
-                            <span class="macro-value" style="color: #22c55e;"><span id="dispPro">0</span>g</span>
+                            <span class="macro-value"><span id="dispPro">0</span>g</span>
                         </div>
                         <div class="macro-card">
                             <span class="macro-label">Carbs</span>
-                            <span class="macro-value" style="color: #3b82f6;"><span id="dispCarbs">0</span>g</span>
+                            <span class="macro-value"><span id="dispCarbs">0</span>g</span>
                         </div>
                     </div>
 
@@ -99,7 +99,7 @@
 
     <!-- Sidebar (Totals) -->
     <div style="display: flex; flex-direction: column; gap: 24px;">
-        <div class="glass-card" style="background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); color: white;">
+        <div class="glass-card summary-card">
             <h3 style="color: white; margin-bottom: 20px; opacity: 0.9;">Daily Summary</h3>
 
             <div style="text-align: center; margin-bottom: 30px;">
@@ -108,18 +108,17 @@
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; text-align: center;">
+                <div class="summary-stat">
                     <span style="display: block; font-size: 1.5rem; font-weight: 700;">{{ totals.protein | round(1)
                         }}g</span>
                     <span style="font-size: 0.8rem; opacity: 0.8;">Protein</span>
                 </div>
-                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; text-align: center;">
+                <div class="summary-stat">
                     <span style="display: block; font-size: 1.5rem; font-weight: 700;">{{ totals.carbs | round(1)
                         }}g</span>
                     <span style="font-size: 0.8rem; opacity: 0.8;">Carbs</span>
                 </div>
-                <div
-                    style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; text-align: center; grid-column: span 2;">
+                <div class="summary-stat" style="grid-column: span 2;">
                     <span style="display: block; font-size: 1.5rem; font-weight: 700;">{{ totals.fats | round(1)
                         }}g</span>
                     <span style="font-size: 0.8rem; opacity: 0.8;">Fats</span>
@@ -136,13 +135,13 @@
         Chetten here! 👋
     </div>
     <button class="ai-avatar-btn" onclick="toggleChat()">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="AI Bot" class="ai-avatar-img">
+        <img src="{{ url_for('static', filename='bot_icon.png') }}" alt="AI Bot" class="ai-avatar-img">
     </button>
 
     <!-- Chat Window -->
     <div id="chat-box" class="chat-window">
         <div class="chat-header">
-            <span>Fitness Coach</span>
+            <span>Fitness Assistant</span>
             <span onclick="toggleChat()" style="cursor: pointer; opacity: 0.8;">✕</span>
         </div>
 
