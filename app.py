@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
-import google.generativeai as genai
+from groq import Groq
 from datetime import datetime,date
 
 # Load environment variables from .env file
@@ -17,9 +17,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretkey123'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
-# --- AI SETUP ---
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel('gemini-1.5-flash') # "Flash" is faster and cheaper for this
+# --- AI SETUP (Groq) ---
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -59,7 +58,7 @@ class FoodLog(db.Model):
 
 # --- HELPER FUNCTION: ASK AI ---
 def get_food_info_from_ai(food_name):
-    """Asks Gemini for food macros and returns a Python Dictionary"""
+    """Asks Groq AI for food macros and returns a Python Dictionary"""
     prompt = f"""
     You are a nutritionist expert in Indian and Kerala cuisine.
     I need nutritional info for: "{food_name}".
@@ -72,12 +71,16 @@ def get_food_info_from_ai(food_name):
         "carbs": float (grams),
         "fats": float (grams)
     }}
-    Do not add any markdown formatting like ```json. Just raw text.
+    Do not add any markdown formatting like ```json. Just raw JSON text.
     """
     try:
-        response = model.generate_content(prompt)
-        # Clean the response to ensure it's valid JSON
-        clean_text = response.text.replace('```json', '').replace('```', '').strip()
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.3,
+            max_tokens=200
+        )
+        clean_text = response.choices[0].message.content.replace('```json', '').replace('```', '').strip()
         return json.loads(clean_text)
     except Exception as e:
         print(f"AI Error: {e}")
@@ -105,7 +108,7 @@ def home():
         
         return render_template('dashboard.html', user=current_user, logs=logs, totals=totals)
     else:
-        return "<h1>Welcome to Kerala Fitness V2</h1> <a href='/register'>Sign Up</a> | <a href='/login'>Login</a>"
+        return render_template('index.html')
     
 # --- NEW: AI COACH ROUTE ---
 @app.route('/ask_ai', methods=['POST'])
@@ -114,24 +117,28 @@ def ask_ai():
     user_message = request.json.get('message')
     
     # 1. Define the Persona (The "System Prompt")
-    system_instruction = """
-    You are 'Chettan', a friendly and knowledgeable fitness coach from Kerala. 
-    You help people with Indian/Kerala diet tips, workout advice, and motivation.
-    - Keep answers short (under 3 sentences).
-    - Use simple English.
-    - If asked about non-fitness topics (like math or coding), politely refuse.
-    - Be encouraging!
-    """
-    
-    # 2. Combine Persona + User Question
-    full_prompt = f"{system_instruction}\n\nUser: {user_message}\nCoach:"
+    system_instruction = """You are 'Chettan', a friendly and knowledgeable fitness coach from Kerala. 
+You help people with Indian/Kerala diet tips, workout advice, and motivation.
+- Keep answers short (under 3 sentences).
+- Use simple English.
+- If asked about non-fitness topics (like math or coding), politely refuse.
+- Be encouraging!"""
     
     try:
-        # 3. Ask Gemini
-        response = model.generate_content(full_prompt)
-        ai_reply = response.text.strip()
+        # 2. Ask Groq
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": system_instruction},
+                {"role": "user", "content": user_message}
+            ],
+            temperature=0.7,
+            max_tokens=150
+        )
+        ai_reply = response.choices[0].message.content.strip()
         return jsonify({"reply": ai_reply})
     except Exception as e:
+        print(f"AI Coach Error: {e}")
         return jsonify({"reply": "Sorry, I am taking a rest break. Try again later!"})
 
 

@@ -1,34 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Login - Fitness Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="center-container" style="max-width: 450px; margin-top: 80px;">
-        <div class="glass-card">
-            <h1 style="font-size: 28px; margin-bottom: 10px;">Login to Fitness Pro</h1>
-            <p style="color: var(--text-secondary); margin-bottom: 30px;">Welcome back! Please enter your details.</p>
+{% extends "layout.html" %}
 
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}<p style="color: #d9534f; font-size: 14px;">{{ messages[0] }}</p>{% endif %}
-            {% endwith %}
+{% block title %}Login - Fitness Pro{% endblock %}
 
-            <form method="POST" action="/login">
-                <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">Username</label>
+{% block content %}
+<div class="center-container">
+    <div class="glass-card" style="width: 100%; max-width: 420px;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <!-- Logo is in navbar now -->
+            <h1>Welcome Back</h1>
+            <p>Login to continue your fitness journey</p>
+        </div>
+
+        <form method="POST" action="/login">
+            <div class="form-group">
+                <label>Username</label>
                 <input type="text" name="username" class="modern-input" placeholder="Enter your username" required>
-                
-                <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">Password</label>
-                <input type="password" name="password" class="modern-input" placeholder="••••••••" required>
-                
-                <button type="submit" class="btn-dark">Log In</button>
-            </form>
-            
-            <div style="margin-top: 20px; text-align: center;">
-                <p style="color: var(--text-secondary);">Don't have an account? <a href="/register" style="font-weight: 600; color: var(--accent-dark);">Sign up</a></p>
             </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" class="modern-input" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Log In</button>
+        </form>
+
+        <div style="margin-top: 24px; text-align: center;">
+            <p>Don't have an account? <a href="/register">Sign up for free</a></p>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}Welcome - Fitness Flow{% endblock %}
+
+{% block content %}
+<div class="center-container">
+    <div class="glass-card" style="width: 100%; max-width: 600px; text-align: center; padding: 60px 40px;">
+        <div style="margin-bottom: 40px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Fitness Flow"
+                style="height: 80px; margin-bottom: 20px;">
+            <h1
+                style="font-size: 3rem; margin-bottom: 16px; background: linear-gradient(to right, var(--primary-color), var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Fitness Flow</h1>
+            <p style="font-size: 1.2rem; max-width: 400px; margin: 0 auto;">Smart nutrition tracking with AI-powered
+                insights for Kerala cuisine.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px; max-width: 300px; margin: 0 auto;">
+            <a href="/register" class="btn-primary" style="display: block; text-decoration: none; text-align: center;">
+                Get Started Free
+            </a>
+            <a href="/login" class="btn-secondary"
+                style="display: block; padding: 14px; border-radius: 8px; font-weight: 700; text-align: center; text-transform: uppercase;">
+                Log In
+            </a>
+        </div>
+
+        <div
+            style="margin-top: 50px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+            <div>
+                <div style="margin-bottom: 12px; color: var(--primary-color);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                        <line x1="6" y1="1" x2="6" y2="4"></line>
+                        <line x1="10" y1="1" x2="10" y2="4"></line>
+                        <line x1="14" y1="1" x2="14" y2="4"></line>
+                    </svg>
+                </div>
+                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-main);">Kerala Foods</span>
+            </div>
+            <div>
+                <div style="margin-bottom: 12px; color: var(--accent-color);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path>
+                        <path d="M12 22v-8"></path>
+                        <path d="M8 10h8"></path>
+                        <path d="M8 18h8"></path>
+                        <path d="M12 14v4"></path>
+                        <path d="M12 18v4"></path>
+                    </svg>
+                </div>
+                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-main);">AI Coach</span>
+            </div>
+            <div>
+                <div style="margin-bottom: 12px; color: var(--primary-color);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                </div>
+                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-main);">Track Progress</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
