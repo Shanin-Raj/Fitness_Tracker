@@ -1,31 +1,81 @@
 {% extends "layout.html" %}
 
-{% block title %}Dashboard - Fitness Pro{% endblock %}
+{% block title %}Dashboard - Fitness Flow{% endblock %}
 
 {% block content %}
-<div class="dashboard-grid">
+<div class="bento-grid">
 
-    <!-- Main Content Area -->
-    <div style="display: flex; flex-direction: column; gap: 24px;">
-
-        <!-- Welcome Section -->
-        <div class="glass-card"
-            style="padding: 30px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <h1>Hello, {{ user.username }} 👋</h1>
-                <p>Track your meals accurately.</p>
-            </div>
-            <a href="/logout" class="btn-primary"
-                style="width: auto; padding: 10px 20px; background: #ef4444;">Logout</a>
+    <!-- Welcome & Stats Card (Feature) -->
+    <div class="bento-card feature-card col-span-2">
+        <div class="bento-card-bg">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="80" fill="rgba(255,255,255,0.1)" />
+                <circle cx="100" cy="100" r="50" fill="rgba(255,255,255,0.1)" />
+            </svg>
         </div>
+        <div class="bento-card-content">
+            <div class="bento-card-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+                    </path>
+                </svg>
+            </div>
+            <h3 class="bento-card-title">Hello, {{ user.username }}!</h3>
+            <p class="bento-card-description">Track your meals accurately and reach your fitness goals.</p>
 
-        <!-- Search Section -->
-        <div class="glass-card">
-            <h2 style="margin-bottom: 20px;">Search Foods & Macros</h2>
+            <div class="bento-stats">
+                <div class="bento-stat-item">
+                    <span class="bento-stat-value">{{ totals.calories }}</span>
+                    <span class="bento-stat-label">Calories</span>
+                </div>
+                <div class="bento-stat-item">
+                    <span class="bento-stat-value">{{ totals.protein | round(1) }}g</span>
+                    <span class="bento-stat-label">Protein</span>
+                </div>
+                <div class="bento-stat-item">
+                    <span class="bento-stat-value">{{ totals.carbs | round(1) }}g</span>
+                    <span class="bento-stat-label">Carbs</span>
+                </div>
+                <div class="bento-stat-item">
+                    <span class="bento-stat-value">{{ totals.fats | round(1) }}g</span>
+                    <span class="bento-stat-label">Fats</span>
+                </div>
+            </div>
+        </div>
+        <div class="bento-card-cta">
+            <a href="/logout" class="bento-cta-btn" style="color: white;">
+                Logout
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                    </path>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Search Foods Card -->
+    <div class="bento-card row-span-2">
+        <div class="bento-card-bg">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 20 L180 100 L100 180 L20 100 Z" fill="rgba(0,0,0,0.05)" />
+            </svg>
+        </div>
+        <div class="bento-card-body">
+            <div class="bento-card-content" style="padding: 0 0 16px 0;">
+                <div class="bento-card-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="bento-card-title">Search Foods</h3>
+                <p class="bento-card-description">Find nutritional info for any food</p>
+            </div>
 
             <div class="search-bar-container">
-                <input type="text" id="foodInput" class="search-input"
-                    placeholder="Search (e.g. 2 Porotta, Fish Curry)...">
+                <input type="text" id="foodInput" class="search-input" placeholder="e.g. 2 Porotta, Fish Curry...">
                 <button onclick="searchFood()" class="search-btn">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -34,7 +84,7 @@
                 </button>
             </div>
 
-            <!-- Search Results (Hidden by default) -->
+            <!-- Search Results -->
             <div id="result" style="display: none; animation: slideUp 0.3s ease-out;">
                 <div class="result-card">
                     <div
@@ -65,17 +115,41 @@
                         </div>
                     </div>
 
-                    <button onclick="addToLog()" class="btn-primary" style="margin-top: 20px;">Add to My Day 📅</button>
+                    <button onclick="addToLog()" class="btn-primary" style="margin-top: 20px;">
+                        Add to My Day
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="margin-left: 8px; vertical-align: middle;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Today's History -->
-        <div class="glass-card">
-            <h2 style="margin-bottom: 20px;">Today's Food History</h2>
+    <!-- Today's History Card -->
+    <div class="bento-card col-span-2 row-span-2">
+        <div class="bento-card-bg">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <rect x="40" y="40" width="120" height="120" rx="20" fill="rgba(0,0,0,0.03)" />
+            </svg>
+        </div>
+        <div class="bento-card-body">
+            <div class="bento-card-content" style="padding: 0 0 16px 0;">
+                <div class="bento-card-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="bento-card-title">Today's Food History</h3>
+                <p class="bento-card-description">Your logged meals for today</p>
+            </div>
 
             {% if logs %}
-            <ul class="food-list">
+            <ul class="food-list" style="margin: 0; max-height: 300px; overflow-y: auto;">
                 {% for log in logs %}
                 <li class="food-item">
                     <div class="food-info">
@@ -90,40 +164,46 @@
             </ul>
             {% else %}
             <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
-                <p>No food logged today. Eat something! 🍽️</p>
+                <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    style="opacity: 0.5; margin-bottom: 12px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                    </path>
+                </svg>
+                <p>No food logged today</p>
+                <p style="font-size: 0.85rem; margin-top: 4px;">Search and add your meals above</p>
             </div>
             {% endif %}
         </div>
-
     </div>
 
-    <!-- Sidebar (Totals) -->
-    <div style="display: flex; flex-direction: column; gap: 24px;">
-        <div class="glass-card summary-card">
-            <h3 style="color: white; margin-bottom: 20px; opacity: 0.9;">Daily Summary</h3>
-
-            <div style="text-align: center; margin-bottom: 30px;">
-                <span style="font-size: 3.5rem; font-weight: 800; line-height: 1;">{{ totals.calories }}</span>
-                <span style="display: block; font-size: 0.9rem; opacity: 0.8; margin-top: 5px;">Total Calories</span>
+    <!-- AI Coach Card (Clickable) -->
+    <div class="bento-card" onclick="toggleChat()" style="cursor: pointer;">
+        <div class="bento-card-bg">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="150" cy="50" r="60" fill="rgba(0,0,0,0.03)" />
+            </svg>
+        </div>
+        <div class="bento-card-content">
+            <div class="bento-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                    </path>
+                </svg>
             </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="summary-stat">
-                    <span style="display: block; font-size: 1.5rem; font-weight: 700;">{{ totals.protein | round(1)
-                        }}g</span>
-                    <span style="font-size: 0.8rem; opacity: 0.8;">Protein</span>
-                </div>
-                <div class="summary-stat">
-                    <span style="display: block; font-size: 1.5rem; font-weight: 700;">{{ totals.carbs | round(1)
-                        }}g</span>
-                    <span style="font-size: 0.8rem; opacity: 0.8;">Carbs</span>
-                </div>
-                <div class="summary-stat" style="grid-column: span 2;">
-                    <span style="display: block; font-size: 1.5rem; font-weight: 700;">{{ totals.fats | round(1)
-                        }}g</span>
-                    <span style="font-size: 0.8rem; opacity: 0.8;">Fats</span>
-                </div>
-            </div>
+            <h3 class="bento-card-title">AI Coach</h3>
+            <p class="bento-card-description">Get personalized diet and exercise tips from your AI fitness assistant.
+            </p>
+        </div>
+        <div class="bento-card-cta">
+            <span class="bento-cta-btn">
+                Start Chat
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                    </path>
+                </svg>
+            </span>
         </div>
     </div>
 
